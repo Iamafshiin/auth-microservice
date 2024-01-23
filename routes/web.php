@@ -13,6 +13,17 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->post('/user/login', 'AuthController@login');
+
+    $router->post('user/logout', [
+        'middleware' => 'jwt.verify',
+        'uses' =>   'AuthController@logout'
+    ]);
+
+    $router->post('/token/validate', ['middleware' => 'jwt.verify', function () {
+        return response()->json([
+            'status' => true
+        ]);
+    }]);
 });
