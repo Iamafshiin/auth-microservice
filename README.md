@@ -1,26 +1,104 @@
-# Lumen PHP Framework
+# Authentication Microservice
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/lumen)](https://packagist.org/packages/laravel/lumen-framework)
+## Overview
+This microservice provides authentication functionalities, specifically designed for login and logout operations. It's built using the Lumen framework and is containerized with Docker, ensuring easy deployment and environment consistency.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+### Features
+- **Login**: Users can log in using their mobile number and password. Upon successful authentication, a JWT (JSON Web Token) is generated for secure sessions.
+- **Logout**: Allows users to securely logout, invalidating their current token.
 
-> **Note:** In the years since releasing Lumen, PHP has made a variety of wonderful performance improvements. For this reason, along with the availability of [Laravel Octane](https://laravel.com/docs/octane), we no longer recommend that you begin new projects with Lumen. Instead, we recommend always beginning new projects with [Laravel](https://laravel.com).
+## Getting Started
 
-## Official Documentation
+### Prerequisites
+- Docker
+- Any REST client (like Postman) for testing the endpoints.
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+### Installation
+1. Clone the repository:
+```
+git clone https://github.com/afshin-phpy/auth-microservice.git
+```
 
-## Contributing
+2. Navigate to the project directory:
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+cd auth-microservice
+```
+3. Install dependencies:
+```
+composer install
+```
+4. Build container:
+```
+docker-compose build
+```
 
-## Security Vulnerabilities
+5. Run the container:
+```
+docker-compose up -d
+```
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+6. Create a .env file in root directory and copy .env.example content into .env file
 
-## License
+7. Run following command for database migration:
+```
+docker-compose exec app1 php artisan migrate
+```
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+### Using the Microservice
+
+#### Login
+- **Host**: `127.0.0.1:8000`
+- **Endpoint**: `/api/user/login`
+- **Method**: POST
+- **Body**:
+```json
+{
+ "mobile": "[user mobile]",
+ "password": "[user password]"
+}
+``````
+#### Response:
+    Success: JWT for authenticated sessions.
+    Error: Relevant error message.
+
+Example:
+```json
+{
+    "data": {
+        "access_token": "auth_token",
+        "name": "user's name",
+        "mobile": "user's mobile number"
+    },
+    "server_time": "server time"
+}
+``````
+
+#### Logout
+
+- **Host**: `127.0.0.1:8000`
+- **Endpoint**: `/api/user/logout`
+- **Headers**:
+        Authorization: Bearer [JWT]
+- **Method**: POST
+- **Response**:
+
+        Success: Confirmation of token invalidation.
+        Error: Relevant error message.
+    Example:
+
+    ```json
+    {
+        "data": {
+            "message": "Successfully logged out"
+    },
+        "server_time": "2024-01-23T23:16:24.041322Z"
+    }
+    ```
+
+### Running Tests
+
+To ensure the functionality of the microservice, tests are provided. Run the following command to execute the tests:
+
+    docker-compose exec app vendor/bin/phpunit
