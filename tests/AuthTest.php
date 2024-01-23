@@ -22,8 +22,8 @@ class AuthTest extends TestCase
         $response->seeJsonStructure([
             'data' => [
                 'access_token',
-                'token_type',
-                'expires_in'   
+                'name',
+                'mobile'   
             ],
             'server_time'
         ]);
