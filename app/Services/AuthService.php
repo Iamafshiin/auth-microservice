@@ -18,7 +18,7 @@ class AuthService
         $this->userRepository = $userRepository;
     }
 
-    public function authentication($credentials): object
+    public function authentication(array $credentials): object
     {
         try {
             if (!$token = $this->userRepository->loginAttempt($credentials)) {
@@ -33,7 +33,7 @@ class AuthService
         }
     }
 
-    public function userLogout($header)
+    public function userLogout(string $header) : object
     {
         try {
             $user = $this->userRepository->getAuthenticatedUser();
