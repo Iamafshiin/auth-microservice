@@ -18,7 +18,7 @@ class EloquentUserRepository implements UserRepositoryInterface
         }
     }
 
-    public function loginAttempt($credentials)
+    public function loginAttempt($credentials) : string
     {
         try {
             return Auth::attempt($credentials);

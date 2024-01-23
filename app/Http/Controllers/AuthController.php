@@ -27,7 +27,7 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request) : object
     {
         try {
             $header = $request->header('Authorization');
