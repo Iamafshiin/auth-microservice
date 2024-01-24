@@ -7,6 +7,8 @@ use App\Http\Resources\Strategies\LogoutResponseStrategy;
 use App\Http\Resources\UserResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
@@ -52,6 +54,26 @@ class AuthService
             return response()->json(new UserResource(new LogoutResponseStrategy($user)));
         } catch (\Throwable $th) {
             throw new Exception($th->getMessage());
+        }
+    }
+
+    public function tokenValidator()
+    {
+        try {
+            JWTAuth::parseToken()->authenticate();
+            return response()->json([
+                'data' => [
+                    'user_id'   =>  Auth::user()->id,
+                    'status'    => true
+                ]
+            ]);
+        } catch (JWTException $e) {
+            // Handle the error (token invalid, token expired, etc.)
+            return response()->json([
+                'data' => [
+                    'status' => false
+                ]
+            ], 401);
         }
     }
 }

@@ -21,9 +21,5 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         'uses' =>   'AuthController@logout'
     ]);
 
-    $router->post('/token/validate', ['middleware' => 'jwt.verify', function () {
-        return response()->json([
-            'status' => true
-        ]);
-    }]);
+    $router->post('/token/validate', "AuthController@validator");
 });

@@ -36,4 +36,9 @@ class AuthController extends Controller
             response()->json(['error' => "An error occured"], 400);
         }
     }
+
+    public function validator()
+    {
+        return $this->authService->tokenValidator();
+    }
 }
