@@ -45,6 +45,10 @@ docker-compose up -d
 docker-compose exec app1 php artisan migrate
 ```
 
+8. Run following command for inserting users into the database:
+```
+docker-compose exec app php artisan db:seed
+```
 
 ### Using the Microservice
 
