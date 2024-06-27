@@ -16,7 +16,7 @@ This microservice provides authentication functionalities, specifically designed
 ### Installation
 1. Clone the repository:
 ```
-git clone https://github.com/afshin-phpy/auth-microservice.git
+git clone https://github.com/Iamafshiin/auth-microservice.git
 ```
 
 2. Navigate to the project directory:
